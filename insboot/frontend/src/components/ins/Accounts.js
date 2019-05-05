@@ -1,13 +1,30 @@
 import React, { Component } from "react";
-import { Table } from "antd";
+import { Table, Button, Modal } from "antd";
 import { connect } from "react-redux";
 
 import { getInsAccounts } from "../../actions/ins/accounts";
 
 class Accounts extends Component {
+  state = {
+    visible: false
+  };
+
   componentDidMount() {
     this.props.getInsAccounts();
   }
+
+  showAddUserModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  handleOk = () => {
+    this.setState({ visible: false });
+  };
+
   render() {
     const data = [
       {
@@ -52,11 +69,26 @@ class Accounts extends Component {
       }
     ];
     return (
-      <Table
-        columns={columns}
-        dataSource={this.props.insAccounts}
-        rowKey="id"
-      />
+      <div>
+        <Button
+          type="primary"
+          style={{ marginBottom: 16, marginTop: 20, marginLeft: 20 }}
+          onClick={this.showAddUserModal}
+        >
+          添加账号
+        </Button>
+        <Table
+          columns={columns}
+          dataSource={this.props.insAccounts}
+          rowKey="id"
+        />
+        <Modal
+          title="Basic Modal"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        />
+      </div>
     );
   }
 }
