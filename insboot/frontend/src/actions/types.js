@@ -1,0 +1,2 @@
+export const GET_INS_ACCOUNTS = "GET_INS_ACCOUNTS";
+export const GET_SETTINGS = "GET_SETTINGS";
