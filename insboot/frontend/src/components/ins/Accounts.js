@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Table, Button, Modal } from "antd";
+import { Table, Button, Modal, Form } from "antd";
 import { connect } from "react-redux";
 
-import { getInsAccounts } from "../../actions/ins/accounts";
+import { getInsAccounts, addInsAccount } from "../../actions/ins/accounts";
+import UserForm from "./accounts/UserForm";
 
 class Accounts extends Component {
   state = {
@@ -21,8 +22,10 @@ class Accounts extends Component {
     this.setState({ visible: false });
   };
 
-  handleOk = () => {
+  handleOk = (value) => {
+    console.log(value)
     this.setState({ visible: false });
+    this.props.addInsAccount(value)
   };
 
   render() {
@@ -82,11 +85,11 @@ class Accounts extends Component {
           dataSource={this.props.insAccounts}
           rowKey="id"
         />
-        <Modal
-          title="Basic Modal"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+        <WrappedAccountForm 
+          visible={this.state.visible} 
+          handleCancel={this.handleCancel}
+          handleOk={this.handleOk}
+          addInsAccount = {this.props.addInsAccount}
         />
       </div>
     );
@@ -97,7 +100,9 @@ const mapStateToProps = state => ({
   insAccounts: state.insAccounts.insAccounts
 });
 
+const WrappedAccountForm = Form.create({ name: "user"})(UserForm)
+
 export default connect(
   mapStateToProps,
-  { getInsAccounts }
+  { getInsAccounts, addInsAccount }
 )(Accounts);

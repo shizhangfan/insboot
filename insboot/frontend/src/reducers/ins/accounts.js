@@ -1,4 +1,4 @@
-import { GET_INS_ACCOUNTS } from "../../actions/types";
+import { GET_INS_ACCOUNTS, ADD_INS_ACCOUNT } from "../../actions/types";
 
 const initialState = {
   insAccounts: []
@@ -11,6 +11,11 @@ export default function(state = initialState, action) {
         ...state,
         insAccounts: action.payload
       };
+    case ADD_INS_ACCOUNT:
+      return {
+        ...state,
+        insAccounts: [...state.insAccounts, action.payload]
+      }
     default:
       return state;
   }
