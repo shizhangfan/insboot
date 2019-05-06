@@ -22,10 +22,9 @@ class Accounts extends Component {
     this.setState({ visible: false });
   };
 
-  handleOk = (value) => {
-    console.log(value)
+  handleOk = value => {
     this.setState({ visible: false });
-    this.props.addInsAccount(value)
+    this.props.addInsAccount(value);
   };
 
   render() {
@@ -85,11 +84,11 @@ class Accounts extends Component {
           dataSource={this.props.insAccounts}
           rowKey="id"
         />
-        <WrappedAccountForm 
-          visible={this.state.visible} 
+        <WrappedAccountForm
+          visible={this.state.visible}
           handleCancel={this.handleCancel}
           handleOk={this.handleOk}
-          addInsAccount = {this.props.addInsAccount}
+          addInsAccount={this.props.addInsAccount}
         />
       </div>
     );
@@ -100,7 +99,7 @@ const mapStateToProps = state => ({
   insAccounts: state.insAccounts.insAccounts
 });
 
-const WrappedAccountForm = Form.create({ name: "user"})(UserForm)
+const WrappedAccountForm = Form.create({ name: "user" })(UserForm);
 
 export default connect(
   mapStateToProps,

@@ -6,7 +6,7 @@ class Account(models.Model):
     email = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=50)
-    status = models.IntegerField(choices=STATUS_CHOICES)
+    status = models.IntegerField(choices=STATUS_CHOICES, null=True)
     tag = models.ForeignKey("Tag", on_delete=models.CASCADE)
 
 
