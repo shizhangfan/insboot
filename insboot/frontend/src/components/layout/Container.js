@@ -19,7 +19,7 @@ class Container extends Component {
   render() {
     return (
       <Router>
-        <Layout>
+        <Layout style={{ height: "100%"}}>
           <Header />
           <Layout>
             <Sidebar />
