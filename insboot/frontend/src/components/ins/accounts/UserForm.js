@@ -15,7 +15,7 @@ class UserForm extends Component {
   };
 
   componentDidMount() {
-    this.props.getInsTags();
+    this.props.getInsTags();    
   }
 
   onChange = e => {
@@ -25,8 +25,15 @@ class UserForm extends Component {
   handleOk = () => {
     this.props.form.validateFields((err, value) => {
       if (!err) {
-        console.log(value);
-        this.props.handleOk(value);
+        const { edit, currentAccount } = this.props;
+        if (edit) {
+          const { id } = currentAccount;
+          const { email, phone, password, tag } = value;
+          const newData = { id, email, phone, password, tag };
+          this.props.handleOk(newData);
+        } else {
+          this.props.handleOk(value);
+        }        
       } else {
         console.log(err);
       }
@@ -39,9 +46,9 @@ class UserForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { email, phone, password, tag } = this.state;
     const tags = this.props.insTags;
-
+    const { edit, currentAccount } = this.props;
+    
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -72,12 +79,15 @@ class UserForm extends Component {
                   required: true,
                   message: "Please input your email"
                 }
-              ]
+              ],
+              initialValue: edit ? currentAccount.email : ''
             })(<Input onChange={this.onChange} />)}
           </Form.Item>
 
           <Form.Item label="Phone">
-            {getFieldDecorator("phone")(<Input onChange={this.onChange} />)}
+            {getFieldDecorator("phone", {
+              initialValue: edit ? currentAccount.phone : ''
+            })(<Input onChange={this.onChange} />)}
           </Form.Item>
 
           <Form.Item label="Password">
@@ -91,7 +101,8 @@ class UserForm extends Component {
                   required: true,
                   message: "Please input your password"
                 }
-              ]
+              ],
+              initialValue: edit ? currentAccount.password : ''
             })(<Input onChange={this.onChange} />)}
           </Form.Item>
 
@@ -102,11 +113,13 @@ class UserForm extends Component {
                   required: true,
                   message: "请选择tag"
                 }
-              ]
+              ],
+              initialValue: edit ? currentAccount.tag : ''
             })(
-              <Select onChange={this.handleTagChange}>
+              <Select 
+                onChange={this.handleTagChange}>
                 {tags.length &&
-                  tags.map(t => <Option key={t.id}>{t.name}</Option>)}
+                  tags.map(t => <Option key={t.id} value={t.id}>{t.name}</Option>)}
               </Select>
             )}
           </Form.Item>
@@ -117,7 +130,8 @@ class UserForm extends Component {
 }
 
 const mapStatetoProps = state => ({
-  insTags: state.insTags.insTags
+  insTags: state.insTags.insTags,
+  currentAccount: state.insAccounts.currentAccount
 });
 
 export default connect(
