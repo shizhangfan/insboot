@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import { Table, Button, Modal, Form } from "antd";
 import { connect } from "react-redux";
 
-import { getInsAccounts, addInsAccount, deleteInsAccount, selectInsAccount, updateInsAccount } from "../../actions/ins/accounts";
+import {
+  getInsAccounts,
+  addInsAccount,
+  deleteInsAccount,
+  selectInsAccount,
+  updateInsAccount
+} from "../../actions/ins/accounts";
 import UserForm from "./accounts/UserForm";
 
 class Accounts extends Component {
@@ -16,13 +22,13 @@ class Accounts extends Component {
   }
 
   showUserModal = (operation, account) => {
-    this.setState({ 
+    this.setState({
       visible: true,
-      edit: operation === 'add' ? false : true
+      edit: operation === "add" ? false : true
     });
-    if (operation === 'edit') {
+    if (operation === "edit") {
       this.props.selectInsAccount(account);
-    }    
+    }
   };
 
   handleCancel = () => {
@@ -36,12 +42,12 @@ class Accounts extends Component {
       this.props.updateInsAccount(value);
     } else {
       this.props.addInsAccount(value);
-    }    
+    }
   };
 
   delete = id => {
-    this.props.deleteInsAccount(id)
-  }
+    this.props.deleteInsAccount(id);
+  };
 
   render() {
     const columns = [
@@ -66,6 +72,11 @@ class Accounts extends Component {
         key: "password"
       },
       {
+        title: "标签",
+        dataIndex: "tag_name",
+        key: "tag_name"
+      },
+      {
         title: "状态",
         dataIndex: "status",
         key: "status"
@@ -75,9 +86,7 @@ class Accounts extends Component {
         dataIndex: "followers",
         key: "followers",
         render: (text, record) => {
-          <span>
-            {`${text}=${record.followers}`}
-          </span>
+          <span>{`${text}=${record.followers}`}</span>;
         }
       },
       {
@@ -85,7 +94,12 @@ class Accounts extends Component {
         key: "edit",
         render: (text, record) => (
           <span>
-            <Button type="primary" onClick={this.showUserModal.bind(this, 'edit', record)}>编辑</Button>
+            <Button
+              type="primary"
+              onClick={this.showUserModal.bind(this, "edit", record)}
+            >
+              编辑
+            </Button>
           </span>
         )
       },
@@ -94,20 +108,22 @@ class Accounts extends Component {
         key: "delete",
         render: (text, record) => (
           <span>
-            <Button type="danger" onClick={this.delete.bind(this, record.id)}>删除</Button>
+            <Button type="danger" onClick={this.delete.bind(this, record.id)}>
+              删除
+            </Button>
           </span>
         )
       }
     ];
-    
+
     const { visible, edit } = this.state;
-    
+
     return (
       <div>
         <Button
           type="primary"
           style={{ marginBottom: 16, marginTop: 20, marginLeft: 20 }}
-          onClick={this.showUserModal.bind(this, 'add')}
+          onClick={this.showUserModal.bind(this, "add")}
         >
           添加账号
         </Button>
@@ -136,5 +152,11 @@ const WrappedAccountForm = Form.create({ name: "user" })(UserForm);
 
 export default connect(
   mapStateToProps,
-  { getInsAccounts, addInsAccount, deleteInsAccount, selectInsAccount, updateInsAccount }
+  {
+    getInsAccounts,
+    addInsAccount,
+    deleteInsAccount,
+    selectInsAccount,
+    updateInsAccount
+  }
 )(Accounts);

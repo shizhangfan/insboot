@@ -3,9 +3,11 @@ from .models import Account, Setting, Tag
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    tag_name = serializers.CharField(source="tag.name")
+
     class Meta:
         model = Account
-        fields = ("id", "email", "phone", "password", "status", "tag")
+        fields = ("id", "email", "phone", "password", "status", "tag_name")
 
 
 class SettingSerrializer(serializers.ModelSerializer):
