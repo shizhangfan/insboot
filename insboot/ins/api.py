@@ -1,6 +1,11 @@
 from rest_framework import viewsets, permissions
-from .serializers import AccountSerializer, TagSerializer, SettingSerrializer
-from .models import Account, Tag, Setting
+from .serializers import (
+    AccountSerializer,
+    TagSerializer,
+    SettingSerrializer,
+    ProxySerializer,
+)
+from .models import Account, Tag, Setting, Proxy
 
 
 class AccountViewset(viewsets.ModelViewSet):
@@ -20,3 +25,8 @@ class SettingViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = Setting.objects.all()
 
+
+class ProxyViewset(viewsets.ModelViewSet):
+    serializer_class = ProxySerializer
+    permission_classes = [permissions.AllowAny]
+    queryset = Proxy.objects.all()

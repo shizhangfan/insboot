@@ -19,3 +19,9 @@ class Setting(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
+
+
+class Proxy(models.Model):
+    name = models.CharField(max_length=100)
+    ip = models.CharField(max_length=30)
+    port = models.CharField(max_length=10)

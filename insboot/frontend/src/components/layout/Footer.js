@@ -11,7 +11,6 @@ export default class ShizfFooter extends Component {
 
 const footerStyle = {
   textAlign: "center",
-  position: "fixed",
   bottom: "10px",
   width: "100%",
   fontFamily: "microsoft-YAHEI",

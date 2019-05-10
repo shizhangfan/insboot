@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Account, Setting, Tag
+from .models import Account, Setting, Tag, Proxy
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -20,4 +20,10 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ("id", "name")
+
+
+class ProxySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Proxy
+        fields = ("id", "name", "ip", "port")
 

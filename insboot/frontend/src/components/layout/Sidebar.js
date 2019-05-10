@@ -33,6 +33,11 @@ export default class Sidebar extends Component {
                 <Link to="/ins/proxies" />
               </Menu.Item>
               <Menu.Item key="4">
+                <Icon type="rise" />
+                注册机
+                <Link to="/ins/register" />
+              </Menu.Item>
+              <Menu.Item key="5">
                 <Icon type="area-chart" />
                 报表
                 <Link to="/ins/reports" />

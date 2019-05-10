@@ -7,3 +7,7 @@ export const SELECT_INS_ACCOUNT = "SELECT_INS_ACCOUNT";
 export const GET_SETTINGS = "GET_SETTINGS";
 
 export const GET_INS_TAGS = "GET_INS_TAGS";
+
+
+// INS PROXIES
+export const GET_PROXIES = "GET_PROXIES";
