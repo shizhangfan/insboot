@@ -25,3 +25,17 @@ class Proxy(models.Model):
     name = models.CharField(max_length=100)
     ip = models.CharField(max_length=30)
     port = models.CharField(max_length=10)
+    used_for_register = models.BooleanField(default=False, null=True)
+
+
+class RegisterWorker(models.Model):
+    working = models.BooleanField(default=False)
+    times_per_proxy = models.IntegerField(default=0)
+
+
+class FirstName(models.Model):
+    text = models.CharField(max_length=100)
+
+
+class LastName(models.Model):
+    text = models.CharField(max_length=100)

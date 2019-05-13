@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Account, Setting, Tag, Proxy
+from .models import Account, Setting, Tag, Proxy, FirstName, LastName, RegisterWorker
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -27,3 +27,20 @@ class ProxySerializer(serializers.ModelSerializer):
         model = Proxy
         fields = ("id", "name", "ip", "port")
 
+
+class FirstNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FirstName
+        fields = ("id", "text")
+
+
+class LastNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LastName
+        fields = ("id", "text")
+
+
+class RegisterWorkerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegisterWorker
+        fields = ("id", "working", "times_per_proxy")
