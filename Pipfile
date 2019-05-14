@@ -12,6 +12,7 @@ django = "*"
 djangorestframework = "*"
 celery = "*"
 redis = "*"
+eventlet = "*"
 
 [requires]
 python_version = "3.7"
