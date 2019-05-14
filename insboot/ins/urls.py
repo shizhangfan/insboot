@@ -6,7 +6,7 @@ from .api import (
     ProxyViewset,
     RegisterSettingViewset,
 )
-from .views import RegisterApi
+from .views import RegisterApi, print_hello
 from rest_framework import routers
 
 
@@ -20,4 +20,5 @@ router.register("ins/regsetting", RegisterSettingViewset, base_name="regsetting"
 urlpatterns = [
     path("", include(router.urls)),
     path("ins/registers/", RegisterApi.as_view(), name="registers"),
+    path("print_hello/", print_hello, name="registers"),
 ]

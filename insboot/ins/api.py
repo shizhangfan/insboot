@@ -1,4 +1,5 @@
 from rest_framework import viewsets, views, permissions
+from rest_framework.response import Response
 from .serializers import (
     AccountSerializer,
     TagSerializer,
@@ -37,3 +38,6 @@ class RegisterSettingViewset(viewsets.ModelViewSet):
     serializer_class = RegisterWorkerSerializer
     permission_class = [permissions.AllowAny]
     queryset = RegisterWorker.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        return Response({"error": "1111"})

@@ -10,6 +10,8 @@ pylint = "*"
 [packages]
 django = "*"
 djangorestframework = "*"
+celery = "*"
+redis = "*"
 
 [requires]
 python_version = "3.7"

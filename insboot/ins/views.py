@@ -8,6 +8,13 @@ from .serializers import (
     RegisterWorkerSerializer,
 )
 from .models import FirstName, LastName, RegisterWorker
+from .tasks import print_hello as say_hello
+
+
+def print_hello(request):
+    say_hello.delay()
+    return HttpResponse("hello")
+
 
 # Create your views here.
 class RegisterApi(APIView):
