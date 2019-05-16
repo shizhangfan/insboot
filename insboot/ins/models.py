@@ -39,3 +39,6 @@ class FirstName(models.Model):
 
 class LastName(models.Model):
     text = models.CharField(max_length=100)
+
+class Target(models.Model):
+    userId = models.CharField(max_length=300)

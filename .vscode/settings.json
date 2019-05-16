@@ -1,5 +1,13 @@
 {
-    "python.pythonPath": "C:\\Users\\shiji\\.virtualenvs\\insboot-I6ESNJdm\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\Administrator\\.virtualenvs\\insboot-NseTGb5T\\Scripts\\python.exe",
     "python.formatting.provider": "black",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false,
+    "editor.fontFamily": "'Fira Code', 'Source Code Pro', Consolas, 'Microsoft JhengHei', 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.minimap.enabled": true,
+    "editor.minimap.renderCharacters": false,
+    "editor.renderWhitespace": "boundary",
+    "editor.renderIndentGuides": true,
+    "editor.wordWrap": "on",
+    "editor.fontSize": 18
 }
