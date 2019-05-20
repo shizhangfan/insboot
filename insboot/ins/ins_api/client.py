@@ -26,3 +26,4 @@ class Client():
         """
         self.username = username
         self.password = password
+        
