@@ -96,8 +96,3 @@ if __name__ == "__main__":
     # print("release")
     # print(device.release)
     # print(device.get_user_agent())
-
-
-
-
-
