@@ -1,5 +1,5 @@
 from .helpers import Helpers
-
+from .routes import get_url
 
 class Request:
 
@@ -42,8 +42,13 @@ class Request:
             attemps = 0
         self.merge_options(options)
 
-    def set_resource(self, resource, data):
+    @property
+    def resource(self):
+        return self.resource
+
+    @resource.setter
+    def resource(self, resource, data):
         self.resource = resource
-        self.set_url(routes.get_url(resource, data))
+        self.set_url(get_url(resource, data))
         return self
 
