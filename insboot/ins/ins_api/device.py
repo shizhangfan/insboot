@@ -95,13 +95,4 @@ if __name__ == "__main__":
     # print("api: {}".format(device.api))
     # print("release")
     # print(device.release)
-<<<<<<< HEAD
     # print(device.get_user_agent())
-=======
-    # print(device.get_user_agent())
-
-
-
-
-
->>>>>>> 999e62ad5444e1e53efd1cd332f938d95759b192
