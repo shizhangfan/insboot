@@ -1,34 +1,162 @@
 from celery.task import task
 from celery import Celery
-from .models import Account, Target
+from .models import Account, Target, RegisterWorker, Proxy, FirstName, LastName
 from datetime import datetime, timedelta
 import random
-
-
+import time
+import string
 import json
 import codecs
 import datetime
 import os.path
 import logging
-import argparse
+import urllib.request as request
 try:
     from instagram_private_api import (
-        Client, ClientError, ClientLoginError,
+        Client, ClientError, ClientLoginError, Device,
         ClientCookieExpiredError, ClientLoginRequiredError,
         __version__ as client_version)
 except ImportError:
     import sys
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from .ins_api import (
-        Client, ClientError, ClientLoginError,
+        Client, ClientError, ClientLoginError, Device,
         ClientCookieExpiredError, ClientLoginRequiredError,
         __version__ as client_version)
+
+
+API_BASE_URL = 'http://api.fxhyd.cn/UserInterface.aspx'
+API_TOKEN = '00662039b612335469fc69b4410c1e9d9e7548129e01'
 
 
 @task
 def print_hello():
     print("hello celery and django...")
     return "hello celery and django..."
+
+
+@task
+def register_worker():
+    logging.basicConfig()
+    logger = logging.getLogger('instagram_private_api')
+    logger.setLevel(logging.INFO)
+
+    worker = RegisterWorker.objects.get(pk=1)
+    if worker.working:
+        logger.info("注册机开始工作，时间：{}".format(str(datetime.datetime.utcnow())))
+        register_times_per_proxy = worker.times_per_proxy
+        register_duration = 15 * 60 / 4
+        proxies = Proxy.objects.all()
+        for proxy in proxies:
+            # 分钟数
+            register_times = [get_register_times(register_duration, i) for i in range(0, register_times_per_proxy)]
+            # 毫秒
+            register_times_mis = [time * 60 * 1000 for time in register_times]
+            # 开始注册
+
+    else:
+        logger.info("注册机未启动~， 时间：{}".format(str(datetime.datetime.utcnow())))
+
+
+def get_register_times(duration, index):
+    return index * duration + random.randint(0, duration)
+
+
+def single_account_register():
+    logging.basicConfig()
+    logger = logging.getLogger('instagram_private_api')
+    logger.setLevel(logging.INFO)
+
+    # 随机获取 first name
+    last_index = FirstName.objects.count()
+    index1 = random.randint(0, last_index)
+    first_name = FirstName.objects.all()[index1]
+
+    # 随机获取 last name
+    index2 = random.randint(0, last_index)
+    last_name = LastName.objects.all()[index2]
+
+    new_username = '{}.{}.{}'.format(random.randint(0, 99999), first_name, last_name)
+    new_password = generate_password(size=random.randint(6, 10))
+    phone = None
+    try:
+        phone = get_phone_number(0)
+    except Exception as e:
+        logger.error('{}{}', e, str(datetime.datetime.utcnow()))
+        return
+
+    creator = Client()
+    creator.set_phone(phone)
+    sms = get_phone_sms(phone, 0)
+    creator.set_sms(phone, sms)
+
+    create_res = creator.create()
+    if create_res.get('result') == 'valid':
+        # 注册成功，记录注册事件和账号
+        new_account = Account(username=new_username, password=new_password, phone=phone)
+        new_account.save()
+
+
+def get_phone_sms(phone, try_number):
+    """
+    从易码平台获取短信 :http://www.51ym.me
+    账号:shizhangfan  密码:kobebryant
+    :param phone:
+    :param try_number:
+    :return:
+    """
+    if try_number > 10:
+        raise Exception("请求次数超过10次，停止获取手机号码")
+
+    url = '{0}?action=getsms&token={1}&itemid=项目编号&mobile={2}&release=1&timestamp={3}'\
+        .format(API_BASE_URL, API_TOKEN, phone, time.mktime(datetime.datetime.now().timetuple()))
+
+    req = request.Request(url)
+    http_handler = request.HTTPHandler()
+    opener = request.build_opener(*http_handler)
+    response = opener.open(req, timeout=60)
+    response_content = response.read().decode('utf8')
+
+    if response_content.find('success') > 0:
+        sms = response_content.split('|')[1]
+        return sms
+    else:
+        return get_phone_number(try_number=try_number + 1)
+
+
+def get_phone_number(try_number):
+    """
+    从易码平台获取新手机号 :http://www.51ym.me
+    账号:shizhangfan  密码:kobebryant
+    :return:
+    """
+    if try_number > 10:
+        raise Exception("请求次数超过10次，停止获取手机号码")
+
+    url = '{0}?action=getmobile&token={1}&itemid=项目编号&excludeno=170.171.180&' \
+          'timestamp=TIMESTAMP'.format(API_BASE_URL, API_TOKEN, time.mktime(datetime.datetime.now().timetuple()))
+
+    req = request.Request(url)
+    http_handler = request.HTTPHandler()
+    opener = request.build_opener(*http_handler)
+    response = opener.open(req, timeout=15)
+    response_content = response.read().decode('utf8')
+
+    if response_content.find('success') > 0:
+        phone = response_content.split('|')[1]
+        return phone
+    else:
+        return get_phone_number(try_number=try_number + 1)
+
+
+def generate_password(size=6, chars=string.ascii_lowercase + string.digits):
+    """
+    生成密码
+    :param size: 密码的长度，默认为6
+    :param chars: 密码的字符集
+    :return:
+    """
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 @task

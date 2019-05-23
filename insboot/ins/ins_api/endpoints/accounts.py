@@ -1,5 +1,6 @@
 import json
-
+import re
+import random
 from ..compat import (
     compat_urllib_request, compat_urllib_error,
     compat_http_client
@@ -20,6 +21,76 @@ except NameError:  # Python 2:
 
 class AccountsEndpointsMixin(object):
     """For endpoints in ``/accounts/``."""
+
+    def set_phone(self, phone):
+        """注册前 设置手机号"""
+        # 构造请求头
+        registration_SMS_code_params = {
+            'phone_number': phone
+        }
+
+        # 发送手机号，请求注册
+        sms_code_response = self._call_api(
+            'accounts/send_signup_sms_code/',
+            params=registration_SMS_code_params,
+            query={'challenge_type': 'signup', 'guid': self.generate_uuid(True)},
+            return_response=True)
+
+        return sms_code_response
+
+    def set_sms(self, phone, code):
+        registration_sms_param = {
+            'phone_number': phone,
+            'verification_code': code
+        }
+
+        set_sms_resp = self._call_api(
+            'accounts/validate_signup_sms_code/',
+            params=registration_sms_param,
+            query={'challenge_type': 'signup', 'guid': self.generate_uuid(True)},
+            return_response=True)
+
+        return set_sms_resp
+
+    def register(self, fullname, username, password, phone, code):
+        """Register."""
+
+        # 构造请求头
+        registration_validated_params = {
+            'password': password,
+            'username': username,
+            'phone_number': phone,
+            'verification_code': code,
+            'first_name': fullname,
+            'force_sign_up_code': "",
+            'qs_stamp': "",
+            'phone_id': self.generate_uuid(),
+            'guid': self.generate_uuid(),
+            'waterfall_id': self.generate_uuid()
+        }
+
+        # 发送手机号，请求注册
+        register_resp = self._call_api(
+            'accounts/create_validated/',
+            params=registration_validated_params,
+            return_response=True)
+
+        return register_resp
+
+    def generate_uuid(self):
+        return re.sub('[xy]', lambda x: self.to_hex(random.randint(0, 15)), 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')
+
+    @staticmethod
+    def to_hex(num):
+        """
+        :type num: int
+        :rtype: str
+        """
+        my_dic = {10: 'a', 11: 'b', 12: 'c', 13: 'd', 14: 'e', 15: 'f'}
+        if num < 10:
+            return str(num)
+        else:
+            return my_dic[num]
 
     def login(self):
         """Login."""
@@ -222,3 +293,7 @@ class AccountsEndpointsMixin(object):
     def disable_presence_status(self):
         """Disable presence status setting"""
         return self.set_presence_status(True)
+
+    def generate_uuid(self):
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace()
+

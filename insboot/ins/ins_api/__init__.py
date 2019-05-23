@@ -1,6 +1,7 @@
 # flake8: noqa
 
 from .client import Client
+from .device import Device
 from .compatpatch import ClientCompatPatch
 from .errors import (
     ClientError, ClientLoginError, ClientLoginRequiredError,
