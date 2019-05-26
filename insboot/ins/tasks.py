@@ -1,5 +1,5 @@
-from celery.task import task
-from celery import Celery
+from __future__ import absolute_import, unicode_literals
+from celery import shared_task
 from .models import Account, Target, RegisterWorker, Proxy, FirstName, LastName
 from datetime import datetime, timedelta
 import random
@@ -11,6 +11,8 @@ import datetime
 import os.path
 import logging
 import urllib.request as request
+from celery.utils.log import get_task_logger
+
 try:
     from instagram_private_api import (
         Client, ClientError, ClientLoginError, Device,
@@ -28,22 +30,24 @@ except ImportError:
 API_BASE_URL = 'http://api.fxhyd.cn/UserInterface.aspx'
 API_TOKEN = '00662039b612335469fc69b4410c1e9d9e7548129e01'
 
+logger_celery = get_task_logger(__name__)
+# celery -A insboot worker -l info -P eventlet -f celery.log
 
-@task
+
+@shared_task
 def print_hello():
+    logger_celery.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     print("hello celery and django...")
     return "hello celery and django..."
 
 
-@task
+@shared_task
 def register_worker():
-    logging.basicConfig()
-    logger = logging.getLogger('instagram_private_api')
-    logger.setLevel(logging.INFO)
-
     worker = RegisterWorker.objects.get(pk=1)
+    logger_celery.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    """
     if worker.working:
-        logger.info("注册机开始工作，时间：{}".format(str(datetime.datetime.utcnow())))
+        # logger.info("注册机开始工作，时间：{}".format(str(datetime.datetime.utcnow())))
         register_times_per_proxy = worker.times_per_proxy
         register_duration = 15 * 60 / 4
         proxies = Proxy.objects.all()
@@ -55,7 +59,9 @@ def register_worker():
             # 开始注册
 
     else:
-        logger.info("注册机未启动~， 时间：{}".format(str(datetime.datetime.utcnow())))
+        # logger.info("注册机未启动~， 时间：{}".format(str(datetime.datetime.utcnow())))
+        print("注册机未启动")
+    """
 
 
 def get_register_times(duration, index):
@@ -159,7 +165,7 @@ def generate_password(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-@task
+@shared_task
 def follow_worker():
     # 获取所有账号
     accounts = Account.objects.all()
@@ -170,7 +176,7 @@ def follow_worker():
         single_account_follow_worker.delay(account)
 
 
-@task
+@shared_task
 def single_account_follow_worker(account):
     if account.working:
         setting = account.setting

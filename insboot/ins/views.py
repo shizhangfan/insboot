@@ -8,11 +8,11 @@ from .serializers import (
     RegisterWorkerSerializer,
 )
 from .models import FirstName, LastName, RegisterWorker
-from .tasks import print_hello as say_hello
+from .tasks import register_worker
 
 
 def print_hello(request):
-    say_hello.delay()
+    register_worker.delay()
     return HttpResponse("hello")
 
 

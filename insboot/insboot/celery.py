@@ -8,7 +8,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "insboot.settings")
 
 app = Celery("insboot")
 
-app.config_from_object("django.conf:settings", namespace="CELERY")
+app.config_from_object("django.conf:settings")
 app.conf.broker_url = "redis://localhost"
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()

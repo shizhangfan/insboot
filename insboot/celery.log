@@ -1,0 +1,15 @@
+[2019-05-27 00:16:03,976: INFO/MainProcess] Connected to redis://localhost:6379//
+[2019-05-27 00:16:08,241: INFO/MainProcess] mingle: searching for neighbors
+[2019-05-27 00:16:26,436: INFO/MainProcess] mingle: all alone
+[2019-05-27 00:16:32,975: INFO/MainProcess] pidbox: Connected to redis://localhost:6379//.
+[2019-05-27 00:16:43,542: WARNING/MainProcess] c:\users\shiji\.virtualenvs\insboot-i6esnjdm\lib\site-packages\celery\fixups\django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
+  warnings.warn('Using settings.DEBUG leads to a memory leak, never '
+[2019-05-27 00:16:43,548: INFO/MainProcess] celery@DESKTOP-LBEPSDA ready.
+[2019-05-27 00:16:43,557: INFO/MainProcess] Received task: ins.tasks.print_hello[858adc7f-04d4-4e0a-b2d8-fc32c3f526ca]  
+[2019-05-27 00:16:43,565: INFO/MainProcess] ins.tasks.print_hello[858adc7f-04d4-4e0a-b2d8-fc32c3f526ca]: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2019-05-27 00:16:43,574: WARNING/MainProcess] hello celery and django...
+[2019-05-27 00:16:43,580: INFO/MainProcess] Task ins.tasks.print_hello[858adc7f-04d4-4e0a-b2d8-fc32c3f526ca] succeeded in 0.01600000000325963s: 'hello celery and django...'
+[2019-05-27 00:17:12,492: INFO/MainProcess] Received task: ins.tasks.print_hello[da863112-0cff-4100-8b38-030c53e1665e]  
+[2019-05-27 00:17:12,497: INFO/MainProcess] ins.tasks.print_hello[da863112-0cff-4100-8b38-030c53e1665e]: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+[2019-05-27 00:17:12,501: WARNING/MainProcess] hello celery and django...
+[2019-05-27 00:17:12,506: INFO/MainProcess] Task ins.tasks.print_hello[da863112-0cff-4100-8b38-030c53e1665e] succeeded in 0.014999999999417923s: 'hello celery and django...'
