@@ -3,11 +3,9 @@ from .models import Account, Setting, Tag, Proxy, FirstName, LastName, RegisterW
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    tag_name = serializers.CharField(source="tag.name")
-
     class Meta:
         model = Account
-        fields = ("id", "email", "phone", "password", "status", "tag_name")
+        fields = ("id", "email", "phone", "password", "status")
 
 
 class SettingSerrializer(serializers.ModelSerializer):

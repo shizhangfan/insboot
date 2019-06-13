@@ -43,8 +43,29 @@ def print_hello():
 
 @shared_task
 def register_worker():
-    worker = RegisterWorker.objects.get(pk=1)
+    accounts = Account.objects.all()
     logger_celery.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    logger_celery.info(accounts)
+    register = RegisterWorker.objects.get(pk=1)
+    logger_celery.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    logger_celery.info(register.working)
+    if register.working:
+        logger_celery.info("注册机开始工作，时间：{}".format(str(datetime.datetime.utcnow())))
+
+        register_times_per_proxy = register.times_per_proxy
+        register_duration = 15 * 60 / 4
+        proxies = Proxy.objects.all()
+        for proxy in proxies:
+            # 分钟数
+            register_times = [get_register_times(register_duration, i) for i in range(0, register_times_per_proxy)]
+            # 秒
+            register_times_sec = [time * 60 for time in register_times]
+            # 开始注册
+            now = datetime.datetime.now()
+            logger_celery.info("下次注册时间为: {}".format(now + timedelta(seconds=10)))
+            print_hello.apply_async(eta=datetime.datetime.utcnow() + timedelta(seconds=10))
+    else:
+        logger_celery.info("注册机未启动~， 时间：{}".format(str(datetime.datetime.utcnow())))
     """
     if worker.working:
         # logger.info("注册机开始工作，时间：{}".format(str(datetime.datetime.utcnow())))

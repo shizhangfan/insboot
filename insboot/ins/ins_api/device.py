@@ -50,7 +50,14 @@ class Device(object):
 
     @property
     def release(self):
-        return ['4.0.4', '4.3.1', '4.4.4', '5.1.1', '6.0.1'][self.md5int % 5]
+        return ['4.0.4', '4.3.1', '4.4.4', '5.1.1', '6.0.1', '7.0.0', '8.0.2', '9.0'][self.md5int % 8]
+
+    @property
+    def phone_chipset(self):
+        return ['qualcommsnapdragon855', 'samsungexynos9820', 'hisiliconkirin980', 'samsungexynos9810',
+                'qualcommsnapdragon845', 'hisiliconkirin970', 'samsungexynos9610', 'samsungexynos8890octa',
+                'hisiliconkirin960', 'hisiliconkirin960s', 'qualcommsnapdragon835', 'qualcommsnapdragon712',
+                'samsungexynos8895octa', 'samsungexynos7885'][self.md5int % 14]
 
     @property
     def payload(self):

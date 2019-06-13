@@ -4,12 +4,11 @@ from django.db import models
 class Account(models.Model):
     STATUS_CHOICES = ((1, "VALID"), (2, "WARNED"), (3, "BANNED"))
     email = models.CharField(max_length=50)
-    username = models.CharField(max_length=100)
+    username = models.CharField(max_length=100, null=True)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=50)
     status = models.IntegerField(choices=STATUS_CHOICES, null=True)
-    tag = models.ForeignKey("Tag", on_delete=models.CASCADE)
-    create_at = models.DateTimeField(auto_now_add=True)
+    create_at = models.DateTimeField(auto_now_add=True, null=True)
 
 
 class Setting(models.Model):

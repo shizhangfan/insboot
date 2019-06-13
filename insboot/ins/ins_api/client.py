@@ -36,6 +36,7 @@ except NameError:  # Python 2:
         pass
 
 from .constants import Constants
+from .device import Device
 from .http import ClientCookieJar
 from .endpoints import (
     AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
@@ -128,36 +129,37 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
         if custom_ua:
             self.user_agent = custom_ua
         else:
+            device = Device(username=self.username)
             self.app_version = (
                 kwargs.pop('app_version', None) or user_settings.get('app_version') or
                 Constants.APP_VERSION)
             self.android_release = (
                 kwargs.pop('android_release', None) or user_settings.get('android_release') or
-                Constants.ANDROID_RELEASE)
+                device.release or Constants.ANDROID_RELEASE)
             self.android_version = int(
                 kwargs.pop('android_version', None) or user_settings.get('android_version') or
-                Constants.ANDROID_VERSION)
+                device.android_version or Constants.ANDROID_VERSION)
             self.phone_manufacturer = (
                 kwargs.pop('phone_manufacturer', None) or user_settings.get('phone_manufacturer') or
-                Constants.PHONE_MANUFACTURER)
+                device.phone_manufacturer or Constants.PHONE_MANUFACTURER)
             self.phone_device = (
                 kwargs.pop('phone_device', None) or user_settings.get('phone_device') or
-                Constants.PHONE_DEVICE)
+                device.info.device or Constants.PHONE_DEVICE)
             self.phone_model = (
                 kwargs.pop('phone_model', None) or user_settings.get('phone_model') or
-                Constants.PHONE_MODEL)
+                device.info.model or Constants.PHONE_MODEL)
             self.phone_dpi = (
                 kwargs.pop('phone_dpi', None) or user_settings.get('phone_dpi') or
-                Constants.PHONE_DPI)
+                device.dpi or Constants.PHONE_DPI)
             self.phone_resolution = (
                 kwargs.pop('phone_resolution', None) or user_settings.get('phone_resolution') or
-                Constants.PHONE_RESOLUTION)
+                device.resolution or Constants.PHONE_RESOLUTION)
             self.phone_chipset = (
                 kwargs.pop('phone_chipset', None) or user_settings.get('phone_chipset') or
-                Constants.PHONE_CHIPSET)
+                device.phone_chipset or Constants.PHONE_CHIPSET)
             self.version_code = (
                 kwargs.pop('version_code', None) or user_settings.get('version_code') or
-                Constants.VERSION_CODE)
+                device.api or Constants.VERSION_CODE)
 
         cookie_string = kwargs.pop('cookie', None) or user_settings.get('cookie')
         cookie_jar = ClientCookieJar(cookie_string=cookie_string)
