@@ -141,10 +141,10 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
                 device.android_version or Constants.ANDROID_VERSION)
             self.phone_manufacturer = (
                 kwargs.pop('phone_manufacturer', None) or user_settings.get('phone_manufacturer') or
-                device.phone_manufacturer or Constants.PHONE_MANUFACTURER)
+                device.info['manufacturer'] or Constants.PHONE_MANUFACTURER)
             self.phone_device = (
                 kwargs.pop('phone_device', None) or user_settings.get('phone_device') or
-                device.info.device or Constants.PHONE_DEVICE)
+                device.info['device'] or Constants.PHONE_DEVICE)
             self.phone_model = (
                 kwargs.pop('phone_model', None) or user_settings.get('phone_model') or
                 device.info.model or Constants.PHONE_MODEL)

@@ -50,7 +50,13 @@ class Device(object):
 
     @property
     def release(self):
-        return ['4.0.4', '4.3.1', '4.4.4', '5.1.1', '6.0.1', '7.0.0', '8.0.2', '9.0'][self.md5int % 8]
+        return [['4.0.3', '15'], ['4.3.1', '18'], ['4.4.4', '20'], ['5.1.1', '22'], ['6.0.1', '23'], ['7.0.0', '24'],
+                ['7.1.0', '25'], ['8.0.2', '26'], ['9.0.0', '28']][self.md5int % 9][0]
+
+    @property
+    def android_version(self):
+        return [['4.0.3', '15'], ['4.3.1', '18'], ['4.4.4', '20'], ['5.1.1', '22'], ['6.0.1', '23'], ['7.0.0', '24'],
+                ['7.1.0', '25'], ['8.0.2', '26'], ['9.0.0', '28']][self.md5int % 9][1]
 
     @property
     def phone_chipset(self):
@@ -92,7 +98,7 @@ class Device(object):
 
 
 if __name__ == "__main__":
-    device = Device("shizf")
+    device = Device("shizfss")
     # print("md5: {0!s}".format(device.md5))
     # print(int(device.md5, 32))
     # print(int(int(device.md5, 32) / 10e32))
@@ -101,5 +107,7 @@ if __name__ == "__main__":
     # print(device.info)
     # print("api: {}".format(device.api))
     # print("release")
-    # print(device.release)
+    print(device.release)
     # print(device.get_user_agent())
+    print("{}".format(device.android_version))
+    print(device.info['manufacturer'])
